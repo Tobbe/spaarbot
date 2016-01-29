@@ -1,0 +1,33 @@
+{
+  "name": "spaarbot",
+  "version": "0.1.0",
+  "description": "robot programming game",
+  "main": "index.html",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jasmine JASMINE_CONFIG_PATH=jasmine.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tobbe/spaarbot.git"
+  },
+  "keywords": [
+    "robots",
+    "browser",
+    "game",
+    "programming",
+    "kids",
+    "learning"
+  ],
+  "author": "Tobbe Lundberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tobbe/spaarbot/issues"
+  },
+  "homepage": "https://github.com/Tobbe/spaarbot#readme",
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  }
+}

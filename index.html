@@ -1,0 +1,180 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Robot Game</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+    <div class="game_area">
+        <canvas class="game_menu" width="780" height="450"></canvas>
+        <canvas class="level_completed_splash" width="780" height="450"></canvas>
+        <canvas class="field" width="410" height="450"></canvas>
+        <canvas class="interactive_elements" width="410" height="450"></canvas>
+        <canvas class="robot" width="410" height="450"></canvas>
+        <form>
+            <textarea cols="30" rows="20"
+                placeholder="Write your program here" autocomplete="off"
+                autocorrect="off" autocapitalize="off" spellcheck="false">
+            </textarea>
+            <input type="button" class="run" value="Run">
+            <input type="button" class="retry hidden" value="Retry">
+            <input type="reset" class="clear" value="Clear">
+        </form>
+    </div>
+    <div class="instructions">
+        <h1>Instructions</h1>
+        <p>
+            To control the robot you have to give it programming instructions.
+            The available instructions are:
+        </p>
+        <code class="info-area">
+            robot.moveRight(int steps);<br>
+            robot.moveLeft(int steps);<br>
+            robot.moveUp(int steps);<br>
+            robot.moveDown(int steps);<br>
+            robot.pushButton();<br>
+            robot.openChest();<br>
+            robot.hasRedKey();<br>
+            robot.hasGreenKey();<br>
+            robot.hasBlueKey();<br>
+            if (&lt;expression&gt;) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.&lt;SomeMethod&gt;();<br>
+            }<br>
+            robot.openDoor();<br>
+            loop {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.&lt;SomeMethod&gt;();<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.&lt;SomeMethod&gt;();<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+            }<br>
+            loop (&lt;expression&gt;) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;...<br>
+            }<br>
+            robot.count();<br>
+            robot.getCount();<br>
+        </code>
+        <p>
+            All move-functions take one parameter, called <code>steps</code>.
+            The type of this parameter is <code>int</code>, which just means
+            that it should be a whole number, written using digits. If the
+            parameter is omitted it is assumed that just one step in the given
+            direction should be taken.
+        </p>
+        <p>
+            For example, the following program would make the robot walk two
+            steps to the right, and then one step up.
+        </p>
+        <code class="info-area">
+            robot.moveRight(2);<br>
+            robot.moveUp();
+        </code>
+        <p>
+            When the robot stands on a button it can push it using the
+            <code>pushButton</code> function. This function takes no
+            parameters.
+        </p>
+        <p>
+            When the robot stands on a chest it can open it using the
+            <code>openChest</code> function. Whatever is in the chest will be
+            collected by the robot. This function takes no parameters.
+        </p>
+        <p>
+            To open red, green and blue doors a key is needed. To check if the
+            robot has the required key the <code>hasRedKey</code>,
+            <code>hasGreenKey</code> and <code>hasBlueKey</code> methods should be
+            used.
+        </p>
+        <p>
+            The <code>has&lt;Color&gt;Key</code> methods described above will
+            most likely be used together with the <code>if</code>-statement.
+            The <code>if</code> statement takes an expression that evaluates
+            to <code>true</code> or <code>false</code> as a parameter, and if
+            it evaluates to <code>true</code> the instructions inside the
+            <code>if</code>-statement are executed.
+        </p>
+        <p>
+            When the robot stands on a door it can open it using the <code>
+            openDoor</code> method. If the door is red, green or blue a key
+            with the same color as the door is needed.
+        </p>
+        <p>
+            To execute the same sequence of instructions over and over again
+            a <code>loop</code> is used. You can put how ever many <code>
+            robot.&lt;SomeMethod&gt;()</code> instructions you want inside
+            the loop. For this simple version of a loop, once you enter it,
+            you will never exit.
+        </p>
+        <p>
+            The robot knows how to count. Just type <code>robot.count()</code>.
+            Every time that method is called the robot will add one to its
+            internal count.
+        </p>
+        <p>
+            To know how far the robot has counted you use
+            <code>robot.getCount()</code>. Use, for example, like this in an
+            <code>if</code>-statement.
+        </p>
+        <code class="info-area">
+            if (robot.getCount() &lt;= 3) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.moveUp();<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.count();<br>
+            }
+        </code>
+        <p>
+            The code snippet above will check if the robot has counted to
+            three or less. If it has, it will move one step up and increase
+            its internal counter by one.
+        </p>
+        <p>
+            In addition to the simple version of a loop shown above, the loop
+            can also be used with an expression. It works just like the
+            expression used with <code>if</code>.
+        </p>
+        <p>
+            Run the same sequence of instructions four times like this:
+        </p>
+        <code class="info-area">
+            loop (robot.getCount() &lt; 4) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.moveUp();<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.moveRight();<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;robot.count();<br>
+            }<br>
+        </code>
+    </div>
+
+    <script src="jquery-2.1.4.js"></script>
+    <script src="tokenizer.js"></script>
+    <script src="ast.js"></script>
+    <script src="parser.js"></script>
+    <script src="levels.js"></script>
+    <script src="instruction.js"></script>
+    <script src="program.js"></script>
+    <script src="script.js"></script>
+
+    <div class="hidden">
+        <!-- prefetch all pictures -->
+        <img id="robot_img" src="robot.png">
+        <img id="robot_animations_push_0" src="img_push/robot_push_1.png">
+        <img id="robot_animations_push_1" src="img_push/robot_push_2.png">
+        <img id="robot_animations_push_2" src="img_push/robot_push_3.png">
+        <img id="robot_animations_push_3" src="img_push/robot_push_4.png">
+        <img id="robot_animations_push_4" src="img_push/robot_push_5.png">
+        <img id="button_img" src="button.png">
+        <img id="chest_img" src="chest.png">
+        <img id="door_red_img" src="door_red.png">
+        <img id="door_red_open_img" src="door_red_open.png">
+        <img id="door_green_img" src="door_green.png">
+        <img id="door_green_open_img" src="door_green_open.png">
+        <img id="door_blue_img" src="door_blue.png">
+        <img id="door_blue_open_img" src="door_blue_open.png">
+        <img id="key_red_img" src="key_red.png">
+        <img id="key_green_img" src="key_green.png">
+        <img id="key_blue_img" src="key_blue.png">
+    </div>
+</body>
+</html>
