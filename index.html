@@ -17,15 +17,19 @@
         <canvas class="field" width="410" height="450"></canvas>
         <canvas class="interactive_elements" width="410" height="450"></canvas>
         <canvas class="robot" width="410" height="450"></canvas>
-        <form>
-            <textarea cols="30" rows="20"
-                placeholder="Write your program here" autocomplete="off"
-                autocorrect="off" autocapitalize="off" spellcheck="false">
-            </textarea>
-            <input type="button" class="run" value="Run">
-            <input type="button" class="retry hidden" value="Retry">
-            <input type="reset" class="clear" value="Clear">
-        </form>
+        <div id="code_area">
+            <div id="program_area">
+                <textarea></textarea>
+            </div>
+            <div id="commands_area">
+                <button class="cmd_left"><img src="cmd_left.png" alt="move left"></button>
+                <button class="cmd_right"><img src="cmd_right.png" alt="move right"></button>
+                <button class="cmd_push_btn"><img src="cmd_push_btn.png" alt="push button"></button>
+            </div>
+            <button class="run">Run</button>
+            <button class="retry hidden">Retry</button>
+            <button class="clear">Clear</button>
+        </div>
     </div>
     <div class="instructions">
         <h1>Instructions</h1>

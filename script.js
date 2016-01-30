@@ -336,28 +336,41 @@ function resetItems() {
 }
 
 function setPageElementsToInitialState() {
-    $('input.clear').prop("disabled", false);
+    $('button.clear').prop("disabled", false);
     $('textarea').prop("disabled", false);
-    $('input.clear').prop("disabled", false);
-    $('input.run').removeClass('hidden');
-    $('input.retry').addClass('hidden');
+    $('button.clear').prop("disabled", false);
+    $('button.run').removeClass('hidden');
+    $('button.retry').addClass('hidden');
     $('.level_completed_splash').hide();
 }
 
 function attachClickHandlers() {
-    $('input.run').on('click', function() {
-        program = new Program(buildAst().toArray());
+    var textarea = $('textarea');
+    $('.cmd_left').on('click', function() {
+        textarea.val(textarea.val() + 'robot.moveLeft();\n');
+    });
+
+    $('.cmd_right').on('click', function() {
+        textarea.val(textarea.val() + 'robot.moveRight();\n');
+    });
+
+    $('.cmd_push_btn').on('click', function() {
+        textarea.val(textarea.val() + 'robot.pushButton();\n');
+    });
+
+    $('button.run').on('click', function() {
+        program = new Program(buildAst(textarea.val()).toArray());
         robot.currentInstruction = program.nextInstruction();
         robot.instructionCompleted = false;
         $('textarea').prop("disabled", true);
-        $('input.clear').prop("disabled", true);
-        $('input.run, input.retry').toggleClass('hidden');
+        $('button.clear').prop("disabled", true);
+        $('button.run, button.retry').toggleClass('hidden');
     });
 
-    $('input.retry').on('click', function () {
+    $('button.retry').on('click', function () {
         prepareToPlay();
 
-        program = new Program(buildAst().toArray());
+        program = new Program(buildAst(textarea.val()).toArray());
     });
 
     $('.game_menu, .level_completed_splash').on('click', function() {
@@ -409,9 +422,8 @@ function timestamp() {
         new Date().getTime();
 }
 
-function buildAst() {
+function buildAst(script) {
     var ast = new TreeNode('', true);
-    var script = $('textarea').val();
     var tokenizer = new Tokenizer(script);
     var parser = new Parser(tokenizer);
     var errorMessages = [];
