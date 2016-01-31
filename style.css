@@ -98,6 +98,7 @@ button {
     border-color: #888;
     margin-left: 0;
     margin-right: 6px;
+    padding: 4px 4px;
 }
 
 #commands_area button img {
