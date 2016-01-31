@@ -258,6 +258,9 @@ function createImageReferences() {
             ]
         }
     };
+    images.cmd_left = document.getElementById('cmd_left_img');
+    images.cmd_right = document.getElementById('cmd_right_img');
+    images.cmd_push_btn = document.getElementById('cmd_push_btn_img');
 }
 
 function createPlayer(startCoordinates) {
@@ -344,18 +347,51 @@ function setPageElementsToInitialState() {
     $('.level_completed_splash').hide();
 }
 
+function drawCmdIcon(icon) {
+    function roundedRect(context, x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        context.beginPath();
+        context.moveTo(x+r - 1, y);
+        context.arcTo(x+w, y,   x+w, y+h, r);
+        context.arcTo(x+w, y+h, x,   y+h, r);
+        context.arcTo(x,   y+h, x,   y,   r);
+        context.arcTo(x,   y,   x+w, y,   r);
+        context.fill();
+        context.stroke();
+        context.closePath();
+    }
+
+    function drawOutline() {
+        context.strokeStyle = '#777';
+        context.lineWidth = 2;
+        context.fillStyle = 'white';
+        roundedRect(context, 2, 2, 52, 52, 4);
+    }
+
+    var canvas = $('#program_area')[0];
+    var context = canvas.getContext('2d');
+    context.setTransform(1, 0, 0, 1, 0, 0);
+    context.scale(1, 1);
+    drawOutline();
+    context.drawImage(images[icon], 4, 4);
+}
+
 function attachClickHandlers() {
     var textarea = $('textarea');
     $('.cmd_left').on('click', function() {
         textarea.val(textarea.val() + 'robot.moveLeft();\n');
+        drawCmdIcon('cmd_left');
     });
 
     $('.cmd_right').on('click', function() {
         textarea.val(textarea.val() + 'robot.moveRight();\n');
+        drawCmdIcon('cmd_right');
     });
 
     $('.cmd_push_btn').on('click', function() {
         textarea.val(textarea.val() + 'robot.pushButton();\n');
+        drawCmdIcon('cmd_push_btn');
     });
 
     $('button.run').on('click', function() {
