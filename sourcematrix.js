@@ -1,61 +1,53 @@
-function SourceMatrix(maxWidth) {
-    this.maxWidth = maxWidth;
-    this.sourceMatrix = [[]];
-}
+var SourceMatrix = {
+    init: function(maxWidth) {
+        this.maxWidth = maxWidth;
+        this.sourceMatrix = [[]];
+        return this;
+    },
+    addCommand: function (visualCmd) {
+        var lastRow = this.sourceMatrix[this.sourceMatrix.length - 1];
+        if (lastRow.length === this.maxWidth) {
+            lastRow = [];
+            this.sourceMatrix.push(lastRow);
+        }
 
-SourceMatrix.prototype.addCommand = function (visualCmd) {
-    var lastRow = this.sourceMatrix[this.sourceMatrix.length - 1];
-    if (lastRow.length === this.maxWidth) {
-        lastRow = [];
-        this.sourceMatrix.push(lastRow);
-    }
-
-    lastRow.push(visualCmd);
-};
-
-SourceMatrix.prototype.toSourceString = function () {
-    var str = '';
-    this.sourceMatrix.forEach(function (row) {
-        row.forEach(function (visualCmd) {
-            str += visualCmd.toSourceString();
+        lastRow.push(visualCmd);
+    },
+    toSourceString: function () {
+        var str = '';
+        this.sourceMatrix.forEach(function (row) {
+            row.forEach(function (visualCmd) {
+                str += visualCmd.toSourceString();
+            });
         });
-    });
 
-    return str;
+        return str;
+    },
+    toArray: function () {
+        return this.sourceMatrix.reduce(function (previousValue, currentValue) {
+            return previousValue.concat(currentValue);
+        });
+    }
 };
 
-SourceMatrix.prototype.toArray = function () {
-    return this.sourceMatrix.reduce(function (previousValue, currentValue) {
-        return previousValue.concat(currentValue);
-    });
+var VisualCmd = {
+    init: function (name) {
+        this.name = name;
+        return this;
+    },
+    getName: function () {
+        return this.name;
+    }
 };
 
-function VisualCmd(name) {
-    this.name = name;
-}
+var VisualCmdLeft = Object.create(VisualCmd).init('cmd_left');
 
-VisualCmd.prototype.getName = function () {
-    return this.name;
-};
-
-function VisualCmdLeft() {
-}
-
-VisualCmdLeft.prototype = new VisualCmd('cmd_left');
-VisualCmdLeft.prototype.constructor = VisualCmdLeft;
-VisualCmdLeft.prototype.parent = VisualCmd.prototype;
-
-VisualCmdLeft.prototype.toSourceString = function () {
+VisualCmdLeft.toSourceString = function () {
     return 'robot.moveLeft();\n';
 };
 
-function VisualCmdRight() {
-}
+var VisualCmdRight = Object.create(VisualCmd).init('cmd_right');
 
-VisualCmdRight.prototype = new VisualCmd('cmd_right');
-VisualCmdRight.prototype.constructor = VisualCmdRight;
-VisualCmdRight.prototype.parent = VisualCmd.prototype;
-
-VisualCmdRight.prototype.toSourceString = function () {
+VisualCmdRight.toSourceString = function () {
     return 'robot.moveRight();\n';
 };
