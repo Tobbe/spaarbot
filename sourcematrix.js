@@ -1,17 +1,32 @@
+/**
+ * moveLeft: mL, moveRight: mR, etc
+ * loop: l
+ * loop body: lB
+ * pushButton: p
+ * openDoor: d
+ *
+ * robot.moveRight();
+ * robot.openDoor();
+ * loop {
+ *     robot.moveLeft(2);
+ *     robot.pushButton();
+ * }
+ *
+ * is stored as
+ *
+ *                  [mL 2]  [p ]
+ * [[mR], [d], [l], [lB  ], [lB]]
+ *
+ * i.e. one array with five inner arrays, where to three first have a length
+ * of one, and the two last have a length of two.
+ */
 var SourceMatrix = {
-    init: function(maxWidth) {
-        this.maxWidth = maxWidth;
-        this.sourceMatrix = [[]];
+    init: function() {
+        this.sourceMatrix = [];
         return this;
     },
     addCommand: function (visualCmd) {
-        var lastRow = this.sourceMatrix[this.sourceMatrix.length - 1];
-        if (lastRow.length === this.maxWidth) {
-            lastRow = [];
-            this.sourceMatrix.push(lastRow);
-        }
-
-        lastRow.push(visualCmd);
+        this.sourceMatrix.push([visualCmd]);
     },
     toSourceString: function () {
         var str = '';
