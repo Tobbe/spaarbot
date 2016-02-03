@@ -52,6 +52,9 @@ var VisualCmd = {
     },
     getName: function () {
         return this.name;
+    },
+    addChild: function (visualCmd) {
+        this.children.push(visualCmd);
     }
 };
 
@@ -65,4 +68,27 @@ var VisualCmdRight = Object.create(VisualCmd).init('cmd_right');
 
 VisualCmdRight.toSourceString = function () {
     return 'robot.moveRight();\n';
+};
+
+var VisualCmdLoop = Object.create(VisualCmd).init('cmd_loop');
+
+VisualCmdLoop.init = function () {
+    this.children = [];
+    return this;
+};
+
+VisualCmdLoop.toSourceString = function () {
+    var str = 'loop {\n';
+    var childrenSource = '';
+    this.children.forEach(function (child) {
+        child.toSourceString()
+            .replace(/\s+$/, '') // rightTrim to remove last newline
+            .split('\n')
+            .forEach(function (line) {
+                str += '    ' + line + '\n';
+            });
+    });
+    str += '}\n';
+
+    return str;
 };

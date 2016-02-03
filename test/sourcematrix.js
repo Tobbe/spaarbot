@@ -52,5 +52,47 @@ describe('VisualCmd', function () {
                 .toEqual('robot.moveRight();\n');
         });
     });
+
+
+    describe('subclass VisualCmdLoop', function () {
+        it('can print the correct source representation with no children', function () {
+            expect(Object.create(VisualCmdLoop.init()).toSourceString())
+                .toEqual('loop {\n}\n');
+        });
+
+        it('can print the correct source representation with several children', function () {
+            var visualCmdLoop = Object.create(VisualCmdLoop).init();
+            visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+            visualCmdLoop.addChild(Object.create(VisualCmdRight));
+            visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+            var expectedSource =
+                'loop {\n' +
+                '    robot.moveLeft();\n' +
+                '    robot.moveRight();\n' +
+                '    robot.moveLeft();\n' +
+                '}\n';
+            expect(visualCmdLoop.toSourceString()).toEqual(expectedSource);
+        });
+
+        it('can print the correct source representation with nested loops', function () {
+            var visualCmdLoopInner = Object.create(VisualCmdLoop).init();
+            visualCmdLoopInner.addChild(Object.create(VisualCmdLeft));
+
+            var visualCmdLoop = Object.create(VisualCmdLoop).init();
+            visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+            visualCmdLoop.addChild(visualCmdLoopInner);
+            visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+
+            var expectedSource =
+                'loop {\n' +
+                '    robot.moveLeft();\n' +
+                '    loop {\n' +
+                '        robot.moveLeft();\n' +
+                '    }\n' +
+                '    robot.moveLeft();\n' +
+                '}\n';
+            expect(visualCmdLoop.toSourceString()).toEqual(expectedSource);
+        });
+    });
 });
 
