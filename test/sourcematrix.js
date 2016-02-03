@@ -38,3 +38,19 @@ describe('SourceMatrix', function () {
     });
 });
 
+describe('VisualCmd', function () {
+    describe('subclass VisualCmdLeft', function () {
+        it('can print the correct source representation', function () {
+            expect(Object.create(VisualCmdLeft).toSourceString())
+                .toEqual('robot.moveLeft();\n');
+        });
+    });
+
+    describe('subclass VisualCmdRight', function () {
+        it('can print the correct source representation', function () {
+            expect(Object.create(VisualCmdRight).toSourceString())
+                .toEqual('robot.moveRight();\n');
+        });
+    });
+});
+
