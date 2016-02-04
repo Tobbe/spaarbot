@@ -40,6 +40,29 @@ describe('SourceMatrix', function () {
         expect(VisualCmdBodyEnd.isPrototypeOf(sourceMatrixArray[5])).toEqual(true);
         expect(VisualCmdLeft.isPrototypeOf(sourceMatrixArray[6])).toEqual(true);
     });
+
+    it('can store nested loops', function () {
+        var visualCmdLoopInner = Object.create(VisualCmdLoop).init();
+        visualCmdLoopInner.addChild(Object.create(VisualCmdRight));
+
+        var visualCmdLoop = Object.create(VisualCmdLoop).init();
+        visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+        visualCmdLoop.addChild(visualCmdLoopInner);
+
+        var sourceMatrix = Object.create(SourceMatrix).init();
+        sourceMatrix.addCommand(Object.create(visualCmdLoop));
+        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
+
+        var sourceMatrixArray = sourceMatrix.toArray();
+        expect(sourceMatrixArray.length).toEqual(7);
+        expect(VisualCmdLoop.isPrototypeOf(sourceMatrixArray[0])).toEqual(true);
+        expect(VisualCmdLeft.isPrototypeOf(sourceMatrixArray[1])).toEqual(true);
+        expect(VisualCmdLoop.isPrototypeOf(sourceMatrixArray[2])).toEqual(true);
+        expect(VisualCmdRight.isPrototypeOf(sourceMatrixArray[3])).toEqual(true);
+        expect(VisualCmdBodyEnd.isPrototypeOf(sourceMatrixArray[4])).toEqual(true);
+        expect(VisualCmdBodyEnd.isPrototypeOf(sourceMatrixArray[5])).toEqual(true);
+        expect(VisualCmdLeft.isPrototypeOf(sourceMatrixArray[6])).toEqual(true);
+    });
 });
 
 describe('VisualCmd', function () {
