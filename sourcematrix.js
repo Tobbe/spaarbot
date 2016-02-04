@@ -82,7 +82,7 @@ VisualCmdLoop.toSourceString = function () {
     var childrenSource = '';
     this.children.forEach(function (child) {
         child.toSourceString()
-            .replace(/\s+$/, '') // rightTrim to remove last newline
+            .slice(0, -1) // remove last newline
             .split('\n')
             .forEach(function (line) {
                 str += '    ' + line + '\n';
