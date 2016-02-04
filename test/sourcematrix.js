@@ -20,6 +20,26 @@ describe('SourceMatrix', function () {
         expect(VisualCmdLeft.isPrototypeOf(sourceMatrix.toArray()[0])).toEqual(true);
         expect(VisualCmdRight.isPrototypeOf(sourceMatrix.toArray()[5])).toEqual(true);
     });
+
+    it('can store loops', function () {
+        var visualCmdLoop = Object.create(VisualCmdLoop).init();
+        visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+        visualCmdLoop.addChild(Object.create(VisualCmdRight));
+        visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+
+        var sourceMatrix = Object.create(SourceMatrix).init();
+        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
+        sourceMatrix.addCommand(Object.create(visualCmdLoop));
+        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
+
+        var sourceMatrixArray = sourceMatrix.toArray();
+        expect(sourceMatrixArray.length).toEqual(7);
+        expect(VisualCmdLeft.isPrototypeOf(sourceMatrixArray[0])).toEqual(true);
+        expect(VisualCmdLoop.isPrototypeOf(sourceMatrixArray[1])).toEqual(true);
+        expect(VisualCmdRight.isPrototypeOf(sourceMatrixArray[3])).toEqual(true);
+        expect(VisualCmdBodyEnd.isPrototypeOf(sourceMatrixArray[5])).toEqual(true);
+        expect(VisualCmdLeft.isPrototypeOf(sourceMatrixArray[6])).toEqual(true);
+    });
 });
 
 describe('VisualCmd', function () {

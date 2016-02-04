@@ -26,7 +26,7 @@ var SourceMatrix = {
         return this;
     },
     addCommand: function (visualCmd) {
-        this.sourceMatrix.push([visualCmd]);
+        this.sourceMatrix = this.sourceMatrix.concat(visualCmd.toArray());
     },
     toSourceString: function () {
         var str = '';
@@ -39,9 +39,7 @@ var SourceMatrix = {
         return str;
     },
     toArray: function () {
-        return this.sourceMatrix.reduce(function (previousValue, currentValue) {
-            return previousValue.concat(currentValue);
-        });
+        return this.sourceMatrix;
     }
 };
 
@@ -55,6 +53,19 @@ var VisualCmd = {
     },
     addChild: function (visualCmd) {
         this.children.push(visualCmd);
+    },
+    toArray: function () {
+        var array = [this];
+
+        if (this.children) {
+            this.children.forEach(function (child) {
+                array = array.concat(child.toArray());
+            });
+
+            array.push(Object.create(VisualCmdBodyEnd));
+        }
+
+        return array;
     }
 };
 
@@ -92,3 +103,5 @@ VisualCmdLoop.toSourceString = function () {
 
     return str;
 };
+
+var VisualCmdBodyEnd = Object.create(VisualCmd);
