@@ -20,22 +20,6 @@ describe('SourceMatrix', function () {
         expect(VisualCmdLeft.isPrototypeOf(sourceMatrix.toArray()[0])).toEqual(true);
         expect(VisualCmdRight.isPrototypeOf(sourceMatrix.toArray()[5])).toEqual(true);
     });
-
-    it('can store several VisualCmds, spanning several rows', function () {
-        var sourceMatrix = Object.create(SourceMatrix).init();
-        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
-        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
-        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
-        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
-        sourceMatrix.addCommand(Object.create(VisualCmdRight));
-        sourceMatrix.addCommand(Object.create(VisualCmdLeft));
-        sourceMatrix.addCommand(Object.create(VisualCmdRight));
-        expect(sourceMatrix.toArray().length).toEqual(7);
-        expect(VisualCmdLeft.isPrototypeOf(sourceMatrix.toArray()[0])).toEqual(true);
-        expect(VisualCmdRight.isPrototypeOf(sourceMatrix.toArray()[4])).toEqual(true);
-        expect(VisualCmdLeft.isPrototypeOf(sourceMatrix.toArray()[5])).toEqual(true);
-        expect(VisualCmdRight.isPrototypeOf(sourceMatrix.toArray()[6])).toEqual(true);
-    });
 });
 
 describe('VisualCmd', function () {
