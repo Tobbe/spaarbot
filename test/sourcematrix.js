@@ -70,6 +70,17 @@ describe('SourceArray', function () {
         expect(sourceArray.toSourceString())
             .toEqual('robot.moveRight();\n');
     });
+
+    it('can produce a source string for multiple commands', function () {
+        var sourceArray = Object.create(SourceArray).init();
+        sourceArray.addCommand(Object.create(VisualCmdRight));
+        sourceArray.addCommand(Object.create(VisualCmdLeft));
+        sourceArray.addCommand(Object.create(VisualCmdLeft));
+        expect(sourceArray.toSourceString())
+            .toEqual('robot.moveRight();\n' +
+                     'robot.moveLeft();\n' +
+                     'robot.moveLeft();\n');
+    });
 });
 
 describe('VisualCmd', function () {
@@ -129,4 +140,3 @@ describe('VisualCmd', function () {
         });
     });
 });
-
