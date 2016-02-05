@@ -8,10 +8,8 @@ var SourceArray = {
     },
     toSourceString: function () {
         var str = '';
-        this.sourceArray.forEach(function (row) {
-            row.forEach(function (visualCmd) {
-                str += visualCmd.toSourceString();
-            });
+        this.sourceArray.forEach(function (visualCmd) {
+            str += visualCmd.toSourceString();
         });
 
         return str;

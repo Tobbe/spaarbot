@@ -63,6 +63,13 @@ describe('SourceArray', function () {
         expect(VisualCmdBodyEnd.isPrototypeOf(sourceArrayArray[5])).toEqual(true);
         expect(VisualCmdLeft.isPrototypeOf(sourceArrayArray[6])).toEqual(true);
     });
+
+    it('can produce a source string for single command', function () {
+        var sourceArray = Object.create(SourceArray).init();
+        sourceArray.addCommand(Object.create(VisualCmdRight));
+        expect(sourceArray.toSourceString())
+            .toEqual('robot.moveRight();\n');
+    });
 });
 
 describe('VisualCmd', function () {
