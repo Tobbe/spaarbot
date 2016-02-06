@@ -116,6 +116,12 @@ describe('VisualCmd', function () {
         });
     });
 
+    describe('subclass VisualCmdPushButton', function () {
+        it('can print the correct source representation', function () {
+            expect(Object.create(VisualCmdPushButton).toSourceString())
+                .toEqual('robot.pushButton();\n');
+        });
+    });
 
     describe('subclass VisualCmdLoop', function () {
         it('can print the correct source representation with no children', function () {
@@ -125,12 +131,12 @@ describe('VisualCmd', function () {
 
         it('can print the correct source representation with several children', function () {
             var visualCmdLoop = Object.create(VisualCmdLoop).init();
-            visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+            visualCmdLoop.addChild(Object.create(VisualCmdPushButton));
             visualCmdLoop.addChild(Object.create(VisualCmdRight));
             visualCmdLoop.addChild(Object.create(VisualCmdLeft));
             var expectedSource =
                 'loop {\n' +
-                '    robot.moveLeft();\n' +
+                '    robot.pushButton();\n' +
                 '    robot.moveRight();\n' +
                 '    robot.moveLeft();\n' +
                 '}\n';

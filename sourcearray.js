@@ -87,3 +87,9 @@ VisualCmdLoop.toSourceString = function () {
 };
 
 var VisualCmdBodyEnd = Object.create(VisualCmd);
+
+var VisualCmdPushButton = Object.create(VisualCmd).init('cmd_push_btn');
+
+VisualCmdPushButton.toSourceString = function () {
+    return 'robot.pushButton();\n';
+};
