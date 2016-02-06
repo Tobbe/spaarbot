@@ -36,11 +36,11 @@ h1, p {
 
 textarea {
     position: absolute;
-    top: 200px;
-    left: 0;
+    top: -1px;
+    left: 320px;
     z-index: 10;
     width: 296px;
-    height: 130px;
+    height: 556px;
 }
 
 button {
