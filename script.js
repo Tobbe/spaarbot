@@ -412,6 +412,12 @@ function attachClickHandlers() {
         program = new Program(buildAst(textarea.val()).toArray());
     });
 
+    $('button.clear').on('click', function () {
+        sourceArray = Object.create(SourceArray).init();
+        renderQueue.push("SOURCE");
+        textarea.val('');
+    });
+
     $('.game_menu, .level_completed_splash').on('click', function() {
         changeGameState();
     });
