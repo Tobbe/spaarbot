@@ -81,6 +81,24 @@ describe('SourceArray', function () {
                      'robot.moveLeft();\n' +
                      'robot.moveLeft();\n');
     });
+
+    it('can produce a source string for loops', function () {
+        var visualCmdLoop = Object.create(VisualCmdLoop).init();
+        visualCmdLoop.addChild(Object.create(VisualCmdRight));
+        visualCmdLoop.addChild(Object.create(VisualCmdLeft));
+
+        var sourceArray = Object.create(SourceArray).init();
+        sourceArray.addCommand(Object.create(VisualCmdRight));
+        sourceArray.addCommand(visualCmdLoop);
+        sourceArray.addCommand(Object.create(VisualCmdRight));
+        expect(sourceArray.toSourceString())
+            .toEqual('robot.moveRight();\n' +
+                     'loop {\n' +
+                     '    robot.moveRight();\n' +
+                     '    robot.moveLeft();\n' +
+                     '}\n' +
+                     'robot.moveRight();\n');
+    });
 });
 
 describe('VisualCmd', function () {

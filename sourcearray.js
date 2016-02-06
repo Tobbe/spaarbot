@@ -8,8 +8,14 @@ var SourceArray = {
     },
     toSourceString: function () {
         var str = '';
+        var skip = 0;
         this.sourceArray.forEach(function (visualCmd) {
-            str += visualCmd.toSourceString();
+            if (skip) {
+                skip--;
+            } else {
+                str += visualCmd.toSourceString();
+                skip = visualCmd.toArray().length - 1;
+            }
         });
 
         return str;
