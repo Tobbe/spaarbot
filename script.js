@@ -423,13 +423,21 @@ function attachClickHandlers() {
     });
 
     $('body').on('keypress', function (event) {
+        if ('s'.charCodeAt(0) === event.which) {
+            $('textarea').toggle();
+        }
+
         if (gameState === 'MENU') {
             var num = -48 + event.which;
             var selectedLevelIndex = num - 1;
 
-            // currentLevel will be increased by one in changeGameState()
-            setCurrentLevelIndex(selectedLevelIndex - 1);
-            changeGameState();
+            if (selectedLevelIndex >= 1 &&
+                selectedLevelIndex <= getNumberOfLevels()) {
+
+                // currentLevel will be increased by one in changeGameState()
+                setCurrentLevelIndex(selectedLevelIndex - 1);
+                changeGameState();
+            }
         }
     });
 }

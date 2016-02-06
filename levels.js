@@ -215,3 +215,7 @@ function moveToNextLevel() {
         currentLevel = 0;
     }
 }
+
+function getNumberOfLevels() {
+    return levels.length;
+}
