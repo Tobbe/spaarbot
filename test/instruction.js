@@ -150,7 +150,7 @@ describe('Instruction', function () {
             'up',
             'fde']);
         expect(program.functions.testFunction)
-            .toEqual(['right', 'up'])
+            .toEqual(['right', 'up']);
     });
 
     it('can create two functions in a more complex program', function () {
