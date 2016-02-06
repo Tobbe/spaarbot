@@ -28,12 +28,17 @@ var SourceArray = {
 var VisualCmd = {
     init: function (name) {
         this.name = name;
+        this.nestingLevel = 0;
         return this;
     },
     getName: function () {
         return this.name;
     },
+    getNestingLevel: function () {
+        return this.nestingLevel;
+    },
     addChild: function (visualCmd) {
+        visualCmd.nestingLevel = this.nestingLevel + 1;
         this.children.push(visualCmd);
     },
     toArray: function () {

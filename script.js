@@ -9,6 +9,7 @@ var tokenizer;
 var program;
 var renderQueue = [];
 var images = {};
+var sourceArray;
 
 var memory = {
     lbl: {},
@@ -42,6 +43,7 @@ $(function () {
     fieldCanvas = $('.field')[0];
     elementsCanvas = $('.interactive_elements')[0];
     robotCanvas = $('.robot')[0];
+    sourceArray = Object.create(SourceArray).init();
     attachClickHandlers();
     drawGameMenu();
     createPlayer();
@@ -347,7 +349,7 @@ function setPageElementsToInitialState() {
     $('.level_completed_splash').hide();
 }
 
-function drawCmdIcon(icon) {
+function drawCmdIcon(icon, x, y) {
     function roundedRect(context, x, y, w, h, r) {
         if (w < 2 * r) r = w / 2;
         if (h < 2 * r) r = h / 2;
@@ -362,36 +364,37 @@ function drawCmdIcon(icon) {
         context.closePath();
     }
 
-    function drawOutline() {
+    function drawOutline(x, y) {
         context.strokeStyle = '#777';
         context.lineWidth = 2;
         context.fillStyle = 'white';
-        roundedRect(context, 2, 2, 52, 52, 4);
+        roundedRect(context, x + 2, y + 2, 52, 52, 4);
     }
 
     var canvas = $('#program_area')[0];
     var context = canvas.getContext('2d');
-    context.setTransform(1, 0, 0, 1, 0, 0);
-    context.scale(1, 1);
-    drawOutline();
-    context.drawImage(images[icon], 4, 4);
+    drawOutline(x, y);
+    context.drawImage(images[icon], x + 4, y + 4);
 }
 
 function attachClickHandlers() {
     var textarea = $('textarea');
     $('.cmd_left').on('click', function() {
+        sourceArray.addCommand(Object.create(VisualCmdLeft));
         textarea.val(textarea.val() + 'robot.moveLeft();\n');
-        drawCmdIcon('cmd_left');
+        renderQueue.push("SOURCE");
     });
 
     $('.cmd_right').on('click', function() {
+        sourceArray.addCommand(Object.create(VisualCmdRight));
         textarea.val(textarea.val() + 'robot.moveRight();\n');
-        drawCmdIcon('cmd_right');
+        renderQueue.push("SOURCE");
     });
 
     $('.cmd_push_btn').on('click', function() {
+        sourceArray.addCommand(Object.create(VisualCmdPushButton));
         textarea.val(textarea.val() + 'robot.pushButton();\n');
-        drawCmdIcon('cmd_push_btn');
+        renderQueue.push("SOURCE");
     });
 
     $('button.run').on('click', function() {
@@ -611,6 +614,16 @@ function render() {
         context.drawImage(images['key_' + color], x, y);
     }
 
+    function drawSource() {
+        var canvas = $('#program_area')[0];
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var source = sourceArray.toArray();
+        source.forEach(function (cmd, index) {
+            drawCmdIcon(cmd.getName(), cmd.getNestingLevel() * 10, index * 56);
+        });
+    }
+
     var statusAreaY = getCurrentLevel().field.length * 68 + 10;
     var statusAreaX = getCurrentLevel().field[0].length * 68;
     var context = elementsCanvas.getContext('2d');
@@ -630,6 +643,9 @@ function render() {
                 drawDynamicGameElements();
                 drawLEDs(getCurrentLevel().leds.length, context, statusAreaX - 12, statusAreaY + 16);
                 drawKey(context, robot.key, 309, statusAreaY + 5);
+                break;
+            case "SOURCE":
+                drawSource();
                 break;
         }
     }
