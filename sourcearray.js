@@ -26,13 +26,11 @@ var SourceArray = {
 };
 
 var VisualCmd = {
-    init: function (name) {
-        this.name = name;
+    init: function (context, icon) {
+        this.context = context;
+        this.icon = icon;
         this.nestingLevel = 0;
         return this;
-    },
-    getName: function () {
-        return this.name;
     },
     getNestingLevel: function () {
         return this.nestingLevel;
@@ -53,25 +51,52 @@ var VisualCmd = {
         }
 
         return array;
+    },
+    drawOutline: function (x, y, width) {
+        function roundedRect(x, y, w, h, r) {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            this.context.beginPath();
+            this.context.moveTo(x+r - 1, y);
+            this.context.arcTo(x+w, y,   x+w, y+h, r);
+            this.context.arcTo(x+w, y+h, x,   y+h, r);
+            this.context.arcTo(x,   y+h, x,   y,   r);
+            this.context.arcTo(x,   y,   x+w, y,   r);
+            this.context.fill();
+            this.context.stroke();
+            this.context.closePath();
+        }
+
+        this.context.strokeStyle = '#777';
+        this.context.lineWidth = 2;
+        this.context.fillStyle = 'white';
+
+        roundedRect.call(this, x + 2, y + 2, width || 52, 52, 4);
+    },
+    draw: function (y) {
+        this.drawOutline(this.nestingLevel * 10, y);
+        this.context.drawImage(this.icon, this.nestingLevel * 10 + 4, y + 4);
     }
 };
 
-var VisualCmdLeft = Object.create(VisualCmd).init('cmd_left');
+var VisualCmdLeft = Object.create(VisualCmd);
 
 VisualCmdLeft.toSourceString = function () {
     return 'robot.moveLeft();\n';
 };
 
-var VisualCmdRight = Object.create(VisualCmd).init('cmd_right');
+var VisualCmdRight = Object.create(VisualCmd);
 
 VisualCmdRight.toSourceString = function () {
     return 'robot.moveRight();\n';
 };
 
-var VisualCmdLoop = Object.create(VisualCmd).init('cmd_loop');
+var VisualCmdLoop = Object.create(VisualCmd);
 
 VisualCmdLoop.init = function () {
     this.children = [];
+    var parent = Object.getPrototypeOf(Object.getPrototypeOf(this));
+    parent.init.apply(this, arguments);
     return this;
 };
 
@@ -93,7 +118,7 @@ VisualCmdLoop.toSourceString = function () {
 
 var VisualCmdBodyEnd = Object.create(VisualCmd);
 
-var VisualCmdPushButton = Object.create(VisualCmd).init('cmd_push_btn');
+var VisualCmdPushButton = Object.create(VisualCmd);
 
 VisualCmdPushButton.toSourceString = function () {
     return 'robot.pushButton();\n';

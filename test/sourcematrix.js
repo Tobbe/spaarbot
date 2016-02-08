@@ -125,7 +125,7 @@ describe('VisualCmd', function () {
 
     describe('subclass VisualCmdLoop', function () {
         it('can print the correct source representation with no children', function () {
-            expect(Object.create(VisualCmdLoop.init()).toSourceString())
+            expect(Object.create(VisualCmdLoop).init().toSourceString())
                 .toEqual('loop {\n}\n');
         });
 

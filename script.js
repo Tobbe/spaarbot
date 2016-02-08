@@ -349,50 +349,30 @@ function setPageElementsToInitialState() {
     $('.level_completed_splash').hide();
 }
 
-function drawCmdIcon(icon, x, y) {
-    function roundedRect(context, x, y, w, h, r) {
-        if (w < 2 * r) r = w / 2;
-        if (h < 2 * r) r = h / 2;
-        context.beginPath();
-        context.moveTo(x+r - 1, y);
-        context.arcTo(x+w, y,   x+w, y+h, r);
-        context.arcTo(x+w, y+h, x,   y+h, r);
-        context.arcTo(x,   y+h, x,   y,   r);
-        context.arcTo(x,   y,   x+w, y,   r);
-        context.fill();
-        context.stroke();
-        context.closePath();
-    }
-
-    function drawOutline(x, y) {
-        context.strokeStyle = '#777';
-        context.lineWidth = 2;
-        context.fillStyle = 'white';
-        roundedRect(context, x + 2, y + 2, 52, 52, 4);
-    }
-
-    var canvas = $('#program_area')[0];
-    var context = canvas.getContext('2d');
-    drawOutline(x, y);
-    context.drawImage(images[icon], x + 4, y + 4);
-}
-
 function attachClickHandlers() {
     var textarea = $('textarea');
+    var programAreaContext = $('#program_area')[0].getContext('2d');
+
     $('.cmd_left').on('click', function() {
-        sourceArray.addCommand(Object.create(VisualCmdLeft));
+        var cmdLeft = Object.create(VisualCmdLeft)
+            .init(programAreaContext, images['cmd_left']);
+        sourceArray.addCommand(cmdLeft);
         textarea.val(textarea.val() + 'robot.moveLeft();\n');
         renderQueue.push("SOURCE");
     });
 
     $('.cmd_right').on('click', function() {
-        sourceArray.addCommand(Object.create(VisualCmdRight));
+        var cmdRight = Object.create(VisualCmdRight)
+            .init(programAreaContext, images['cmd_right']);
+        sourceArray.addCommand(cmdRight);
         textarea.val(textarea.val() + 'robot.moveRight();\n');
         renderQueue.push("SOURCE");
     });
 
     $('.cmd_push_btn').on('click', function() {
-        sourceArray.addCommand(Object.create(VisualCmdPushButton));
+        var cmdPushButton = Object.create(VisualCmdPushButton)
+            .init(programAreaContext, images['cmd_push_btn']);
+        sourceArray.addCommand(cmdPushButton);
         textarea.val(textarea.val() + 'robot.pushButton();\n');
         renderQueue.push("SOURCE");
     });
@@ -634,7 +614,7 @@ function render() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         var source = sourceArray.toArray();
         source.forEach(function (cmd, index) {
-            drawCmdIcon(cmd.getName(), cmd.getNestingLevel() * 10, index * 56);
+            cmd.draw(index * 56);
         });
     }
 
